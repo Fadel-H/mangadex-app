@@ -1,7 +1,6 @@
 import React from 'react'
 
 function Login({onChange, onLoginSubmit}) {
-
   return (
    <>
    <form id="form" onSubmit={onLoginSubmit}>
