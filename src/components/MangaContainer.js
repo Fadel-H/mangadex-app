@@ -1,9 +1,15 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import MangaCard from './MangaCard'
 
-function MangaContainer() {
+function MangaContainer({manga}) {
   return (
-    <div>MangaContainer</div>
+    <div>
+      {manga.map(data => {
+      return  <MangaCard key={data.id} manga={data} />
+      })}
+    </div>
   )
 }
 
 export default MangaContainer
+
