@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import MangaContainer from "./MangaContainer"
 
-function MangaList({retierveMangaInfo, mangaList}) {
-
+function MangaList({retierveMangaInfo, mangaList, setMangaList, followTrigger}) {
+  const [mangaListJson,setMangaListJson]= useState([])
   //fetch manga IDs from public url
   useEffect(()=> {
-    fetch("https://api.mangadex.org/manga?limit=100&year=2022&includedTagsMode=AND&excludedTagsMode=OR&publicationDemographic%5B%5D=shounen&contentRating%5B%5D=safe&order%5BlatestUploadedChapter%5D=desc", {
+    fetch("https://api.mangadex.org/manga?limit=20&year=2022&includedTagsMode=AND&excludedTagsMode=OR&publicationDemographic%5B%5D=shounen&contentRating%5B%5D=safe&order%5BlatestUploadedChapter%5D=desc", {
     headers: {
       Accept: "application/json"
     }
@@ -13,16 +13,22 @@ function MangaList({retierveMangaInfo, mangaList}) {
     .then(response => response.json())
 .then(({data}) => {
 data.map((manga)=> {
-  retierveMangaInfo(manga.id)
+  retierveMangaInfo(mangaList, setMangaList, manga.id, false, "mangaList")
 })  
 })
 }, [])
 
-
+useEffect(() => {
+  fetch(`https://mangadex-project.herokuapp.com/mangaList`)
+  .then(resp => resp.json())
+  .then(data => setMangaListJson(data))
+}, [])
 
   return (
     <div>
-      <MangaContainer manga = {mangaList}/> 
+      <MangaContainer manga ={mangaListJson} 
+      // handleFollow={handleFollow}
+      /> 
     </div>
   )
 }

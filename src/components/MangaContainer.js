@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import MangaCard from './MangaCard'
 
-function MangaContainer({manga}) {
+function MangaContainer({manga, handleFollow}) {
   return (
     <div>
       {manga.map(data => {
-      return  <MangaCard key={data.id} manga={data} />
+      return  <MangaCard key={data.id} manga={data} handleFollow={handleFollow} />
       })}
     </div>
   )

@@ -1,7 +1,21 @@
 import React, {useState, useEffect } from 'react'
 import MangaContainer from './MangaContainer'
 
-function UserManga({sessionToken, mangaList, retierveMangaInfo}) {
+function UserManga({sessionToken,
+   userManga, 
+   setUserManga, 
+   retierveMangaInfo, 
+   handleFollow, 
+   followUpdate,
+  }) {
+
+const [mangaUserJson,setMangaUserJson]= useState([])
+
+useEffect(() => {
+  fetch(`https://mangadex-project.herokuapp.com/userManga`)
+  .then(resp => resp.json())
+  .then(data => setMangaUserJson(data))
+}, [handleFollow])
 
 
 useEffect(() => {
@@ -12,18 +26,24 @@ useEffect(() => {
   }
 })
 .then(response => response.json())
-.then(({data}) => {
+.then(({data}) => { console.log("user", data)
   data.map((manga)=> {
-    retierveMangaInfo(manga.id)
-  })  
+    retierveMangaInfo(userManga, setUserManga, manga.id, true, "userManga")
+  })
   })
 
-}, [sessionToken])
+}, [sessionToken, followUpdate])
   return (
     <div>
-      <MangaContainer manga = {mangaList}/>
+      <MangaContainer manga = {mangaUserJson} handleFollow={handleFollow}/>
     </div>
   )
 }
 
 export default UserManga
+
+
+
+
+
+
