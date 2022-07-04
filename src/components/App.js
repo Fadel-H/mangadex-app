@@ -13,7 +13,6 @@ function App() {
     const [sessionToken, setSessionToken] = useState("")
     const [mangaList, setMangaList]= useState([])
     const [userManga, setUserManga]= useState([])
-    const [followtrigger, setFollowTrigger] = useState(false)
    
 
     useEffect(() => {
@@ -182,7 +181,6 @@ function App() {
           handleFollow={handleFollow}
           mangaList={mangaList}
           setMangaList={setMangaList}
-          followtrigger={followtrigger}
           />}>
       </Route>
       <Route exact path="/manga-list" 
@@ -192,7 +190,6 @@ function App() {
            setMangaList={setMangaList}
            handleFollow={handleFollow}
            userManga={userManga}
-           followtrigger={followtrigger}
            />}>
       </Route>
       </Routes>
