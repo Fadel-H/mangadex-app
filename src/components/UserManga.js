@@ -5,7 +5,8 @@ function UserManga({sessionToken,
    userManga, 
    setUserManga, 
    retierveMangaInfo, 
-   handleFollow
+   handleFollow, 
+   followUpdate,
   }) {
 
 const [mangaUserJson,setMangaUserJson]= useState([])
@@ -17,7 +18,7 @@ useEffect(() => {
 }, [handleFollow])
 
 
-useEffect((retierveMangaInfo,userManga,setUserManga) => {
+useEffect(() => {
   fetch(`https://api.mangadex.org/user/follows/manga?limit=100`, {
   headers: {
     Accept: "application/json",
@@ -27,11 +28,11 @@ useEffect((retierveMangaInfo,userManga,setUserManga) => {
 .then(response => response.json())
 .then(({data}) => { console.log("user", data)
   data.map((manga)=> {
-   return retierveMangaInfo(userManga, setUserManga, manga.id, true, "userManga")
+    retierveMangaInfo(userManga, setUserManga, manga.id, true, "userManga")
   })
   })
 
-}, [sessionToken])
+}, [sessionToken, followUpdate])
   return (
     <div>
       <MangaContainer manga = {mangaUserJson} handleFollow={handleFollow}/>
@@ -40,9 +41,3 @@ useEffect((retierveMangaInfo,userManga,setUserManga) => {
 }
 
 export default UserManga
-
-
-
-
-
-

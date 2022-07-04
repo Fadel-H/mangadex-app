@@ -12,4 +12,3 @@ function MangaContainer({manga, handleFollow}) {
 }
 
 export default MangaContainer
-
