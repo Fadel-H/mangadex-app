@@ -18,7 +18,7 @@ function App() {
     useEffect(() => {
  // post public manga data to json server
    mangaList.map((manga) => {
-    fetch(`https://mangadex-project.herokuapp.com/mangaList`,{ 
+    return fetch(`https://mangadex-project.herokuapp.com/mangaList`,{ 
     method: "Post",
     headers: {
       'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ function App() {
     useEffect(() => {
       // post user manga data to json server
       userManga.map((manga) => {
-        fetch(`https://mangadex-project.herokuapp.com/userManga`,{ 
+       return fetch(`https://mangadex-project.herokuapp.com/userManga`,{ 
         method: "Post",
         headers: {
           'Content-Type': 'application/json'
@@ -44,19 +44,19 @@ function App() {
 
 
   
-    useEffect(() => {
-      let i = 0
-      mangaList.map((list) => {
-      userManga.map((user)=> {
-       return user.id === list.id ? 
-       mangaList[i].followStat = true : null
-      })
-      i++
-    })
-    setMangaList(mangaList)
-    }, [userManga])
+    // useEffect(() => {
+    //   let i = 0
+    //   mangaList.map((list) => {
+    //   return  userManga.map((user)=> {
+    //    return user.id === list.id ? 
+    //    mangaList[i].followStat = true : null
+    //   })
+    //   i++
+    // })
+    // setMangaList(mangaList)
+    // }, [userManga])
 
-    //update username and password when inputted in the login form
+     //update username and password when inputted in the login form
     function onChange(e){
       if (e.target.name=== "username"){
         setLogin({...login, username: e.target.value})
@@ -65,6 +65,7 @@ function App() {
       }
      
     }
+
 
     // retierve id, title, description, cover art, and page url for manga
     function retierveMangaInfo(manga,setManga,id, stat, type ){

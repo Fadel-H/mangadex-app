@@ -13,7 +13,7 @@ function MangaList({retierveMangaInfo, mangaList, setMangaList, followTrigger}) 
     .then(response => response.json())
 .then(({data}) => {
 data.map((manga)=> {
-  retierveMangaInfo(mangaList, setMangaList, manga.id, false, "mangaList")
+ return retierveMangaInfo(mangaList, setMangaList, manga.id, false, "mangaList")
 })  
 })
 }, [])

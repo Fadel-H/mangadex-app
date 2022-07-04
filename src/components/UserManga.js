@@ -28,7 +28,7 @@ useEffect(() => {
 .then(response => response.json())
 .then(({data}) => { console.log("user", data)
   data.map((manga)=> {
-    retierveMangaInfo(userManga, setUserManga, manga.id, true, "userManga")
+   return retierveMangaInfo(userManga, setUserManga, manga.id, true, "userManga")
   })
   })
 
