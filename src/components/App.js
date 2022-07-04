@@ -13,12 +13,35 @@ function App() {
     const [sessionToken, setSessionToken] = useState("")
     const [mangaList, setMangaList]= useState([])
     const [userManga, setUserManga]= useState([])   
+    const [loginStat, setLoginStat]= useState(false)
+    const [loggedIn, setLoggedIn] = useState('')
+    const [mangaUserJson,setMangaUserJson]= useState([])
+    const [mangaListJson,setMangaListJson]= useState([])
+
+    //Clean backend json objects
+    useEffect(() => {
+      fetch(`https://mangadex-project.herokuapp.com/userManga`)
+      .then(resp => resp.json())
+      .then(data => setMangaUserJson(data))
+
+      mangaUserJson.map((manga)=> fetch(`https://mangadex-project.herokuapp.com/userManga/${manga.id}`,{method: "DELETE"}))
+
+      fetch(`https://mangadex-project.herokuapp.com/mangaList`)
+      .then(resp => resp.json())
+      .then(data => setMangaListJson(data))
+
+      mangaListJson.map((manga)=> fetch(`https://mangadex-project.herokuapp.com/mangaList/${manga.id}`,{method: "DELETE"}))
+    
+    }, [])
+
+
+
 
     useEffect(() => {
  // post public manga data to json server
    mangaList.map((manga) => {
    return( fetch(`https://mangadex-project.herokuapp.com/mangaList`,{ 
-    method: "Post",
+    method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
@@ -42,19 +65,6 @@ function App() {
   }, [userManga])
 
 
-  
-    // useEffect(() => {
-    //   let i = 0
-    //   mangaList.map((list) => {
-    //   return userManga.map((user)=> {
-    //    return user.id === list.id ? 
-    //    mangaList[i].followStat = true : null
-    //   })
-    //   i++
-    // })
-    // setMangaList(mangaList)
-    // }, [userManga])
-
     //update username and password when inputted in the login form
     function onChange(e){
       if (e.target.name=== "username"){
@@ -66,7 +76,7 @@ function App() {
     }
 
     // retierve id, title, description, cover art, and page url for manga
-    function retierveMangaInfo(manga,setManga,id, stat, type ){
+    function retierveMangaInfo(manga,setManga,id, type, stat =false ){
       fetch(`https://api.mangadex.org/manga/${id}?includes[]=author&includes[]=artist&includes[]=cover_art`)
     .then(resp => resp.json())
     .then(({data}) => { 
@@ -101,7 +111,7 @@ function App() {
         
     }
 
-    //login in user
+    //login user
     function onLoginSubmit(e){
       e.preventDefault()
         fetch("https://api.mangadex.org/auth/login", {
@@ -111,24 +121,38 @@ function App() {
     redirect: 'follow'})
       .then(response => response.json())
       .then(data => {
-        setSessionToken(data.token.session)})
+        setLoggedIn(data.result)
+        setSessionToken(data.token.session)
+      setLoginStat(true)})
     }
 
+    //logout user
+    function handleLogOut(e){
+      e.stopPropagation()
+      if(loggedIn === "ok"){
+      setLoginStat(false)
+
+     fetch("https://api.mangadex.org/auth/logout", {
+      headers: {
+        Accept: "application/json"
+      },
+      method: "POST"
+    })
+
+    mangaUserJson.map((manga)=> fetch(`https://mangadex-project.herokuapp.com/userManga/${manga.id}`, {
+      headers: {
+        Accept: "application/json"
+      },
+      method: "Delete"
+    }))
+
+    }}
+
     //updata manga follow stat
-    function handleFollow(id, stat, type){
-      if (stat){
-        console.log(id)
-        console.log(stat)
-  
-        fetch(`https://api.mangadex.org/manga/${id}/follow`, {
-          headers: {
-            Accept: "application/json",
-            "authorization" : sessionToken
-          },
-          method: 'POST'})
-  
-  
-        fetch(`https://mangadex-project.herokuapp.com/${type}/${id}`, {
+    function handleFollow(id, stat, manga){
+      if (!stat && loggedIn === "ok"){
+
+        fetch(`https://mangadex-project.herokuapp.com/mangaList/${id}`, {
           method: "PATCH",
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
@@ -137,19 +161,37 @@ function App() {
             "followStat" : true
           })
         })
-  
-      } else {
-        console.log(id)
-        console.log(stat)
-        // fetch(`https://api.mangadex.org/manga/${id}/follow`, {
-        //   headers: {
-        //     Accept: "application/json",
-        //     "authorization" : sessionToken
-        //   },
-        //   method: "DELETE"
-      // })
-  
-      fetch(`https://mangadex-project.herokuapp.com/${type}/${id}`, {
+
+
+        fetch(`https://api.mangadex.org/manga/${id}/follow`, {
+          headers: {
+            Accept: "application/json",
+            "authorization" : sessionToken
+          },
+          method: 'POST'})
+
+        fetch(`https://mangadex-project.herokuapp.com/userManga`,{ 
+            method: "Post",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(manga)})
+
+        fetch(`https://mangadex-project.herokuapp.com/mangaList`)
+        .then(resp=> resp.json())
+        .then(data => setMangaListJson(data))
+
+      } else if (stat && loggedIn === "ok") {
+
+        fetch(`https://api.mangadex.org/manga/${id}/follow`, {
+          headers: {
+            Accept: "application/json",
+            "authorization" : sessionToken
+          },
+          method: "DELETE"
+      })
+
+      fetch(`https://mangadex-project.herokuapp.com/mangaList/${id}`, {
           method: "PATCH",
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
@@ -158,15 +200,36 @@ function App() {
             "followStat" : false
           })
         })
+  
+      fetch(`https://mangadex-project.herokuapp.com/userManga/${id}`, {
+        headers: {
+          Accept: "application/json"
+        },
+        method: "Delete"
+      })
+
+      fetch(`https://mangadex-project.herokuapp.com/mangaList/${id}`, {
+        method: "PATCH",
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          "followStat" : false
+        })
+      })
+
+      fetch(`https://mangadex-project.herokuapp.com/userManga`)
+      .then(resp=> resp.json())
+      .then(data => setMangaUserJson(data))
   }
   }
 
- 
+  
 
   return (
 
     <div className="p-3 mb-2 bg-dark text-white ">
-    <NavBar/>
+    <NavBar handleLogOut={handleLogOut} loginStat={loginStat} />
       <Routes>
       <Route path="/" 
           element={<Login onLoginSubmit={onLoginSubmit} onChange={onChange}/>}>
@@ -180,6 +243,9 @@ function App() {
           handleFollow={handleFollow}
           mangaList={mangaList}
           setMangaList={setMangaList}
+          mangaUserJson={mangaUserJson}
+          setMangaUserJson={setMangaUserJson}
+          loggedIn= {loggedIn}
           />}>
       </Route>
       <Route exact path="/manga-list" 
@@ -189,6 +255,8 @@ function App() {
            setMangaList={setMangaList}
            handleFollow={handleFollow}
            userManga={userManga}
+           mangaListJson={mangaListJson}
+           setMangaListJson={setMangaListJson}
            />}>
       </Route>
       </Routes>

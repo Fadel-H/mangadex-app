@@ -16,7 +16,7 @@ function MangaCard({manga, handleFollow}) {
           </img>
           <button  className='"btn btn-success btn-lg w-100' 
           type="button" 
-          onClick={() => handleFollow(manga.id, manga.followStat, manga.type)}>
+          onClick={() => handleFollow(manga.id, manga.followStat, manga.type, manga)}>
             {manga.followStat ? "unfollow" : "follow"}
             </button>
         </div>
