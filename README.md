@@ -1,70 +1,19 @@
-# Getting Started with Create React App
+# mangadex-app
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository is a continuation of https://github.com/Fadel-H/phase-1-project repository, but was converted to use the react framework, and uses a backend json.server hosted by Heroku. 
 
-## Available Scripts
+To start the app, you will need to run “npm start” in your terminal, and the react app should automatically open in your browser. Once the page loads, you will see a login form that asks for your username, and password. You can either use your own MangaDex account info, or use the test account I created for this application.
 
-In the project directory, you can run:
+username: TestAccountforProject ||| password: 123ABCDEF
 
-### `npm start`
+On the top left of the page, you will see a small navigation bar with three tabs. Login, userManga, and mangaList. The login tab will take you to your current page which is the login screen, the userManga tab will take you to a blank screen if you are not logged in, and the mangaList tab will take you to a page where the ten most recently update mangas are displayed with information’s associated with them.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Once you enter your login information, and hit enter, you will be able to view your current manga follow list in the userManga Tab. To make sure that you are logged in, you will see the login tab in the navigation bar change to logout. You would then be able to follow/unfollow manga by clicking on the button underneath the cover image of the mangas. Following mangas from the mangaList tab, will be reflected in the userManga tab, and manga that is unfollowed will be removed from the userManga tab.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Once you are done, you can click on the logout tab on the navigation bar to logout, and the userManga tab will display as an empty screen once again.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Notes about this project:
+-If you follow a manga on the app, and check your library on https://mangadex.org/titles/follows, you might not see them since the api follow fetch only adds the manga to the user follow list, but doesn't assign a stat (reading, planning to read, on-hold, etc...).
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+-I'm having issues with the Heroku backend server, so you will see a bunch of errors on the console screen of the page, but the mangas should still load in mangaList, and userManga tabs.
