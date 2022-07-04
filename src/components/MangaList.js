@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import MangaContainer from "./MangaContainer"
 
-function MangaList({retierveMangaInfo, mangaList, setMangaList, followTrigger}) {
+function MangaList({retierveMangaInfo, mangaList, setMangaList}) {
   const [mangaListJson,setMangaListJson]= useState([])
   //fetch manga IDs from public url
-  useEffect(()=> {
+
+  useEffect((retierveMangaInfo,mangaList, setMangaList)=> {
     fetch("https://api.mangadex.org/manga?limit=20&year=2022&includedTagsMode=AND&excludedTagsMode=OR&publicationDemographic%5B%5D=shounen&contentRating%5B%5D=safe&order%5BlatestUploadedChapter%5D=desc", {
     headers: {
       Accept: "application/json"
